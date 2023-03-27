@@ -23,6 +23,7 @@ pub struct Stats {
     class_na_sum: usize,
     interface_na_sum: usize,
     is_class_space: bool,
+    is_interface: bool,
 }
 
 impl Serialize for Stats {
@@ -265,9 +266,48 @@ implement_metric_trait!(
     RustCode,
     CppCode,
     PreprocCode,
-    CcommentCode,
-    KotlinCode
+    CcommentCode
 );
+
+impl Npa for KotlinCode {
+    fn compute(node: &Node, stats: &mut Stats) {
+        use Kotlin::*;
+
+        // Enables the `Npa` metric if computing stats of a class space
+        if Self::is_func_space(node) && stats.is_disabled() {
+            stats.is_class_space = true;
+        }
+
+        if let ClassDeclaration = node.kind_id().into() {
+            for class_child in node.children() {
+                match class_child.kind_id().into() {
+                    Interface => stats.is_interface = true,
+                    ClassBody => {
+                        for node in class_child.children() {
+                            if matches!(node.kind_id().into(), PropertyDeclaration) {
+                                for modifiers in node.children() {
+                                    if matches!(modifiers.kind_id().into(), Modifiers)
+                                        && modifiers.child(0).map_or(false, |modifier| {
+                                            matches!(modifier.kind_id().into(), VisibilityModifier)
+                                                && modifier.first_child(|id| id == Public).is_some()
+                                        })
+                                    {
+                                        if stats.is_interface {
+                                            stats.interface_npa += 1;
+                                        } else {
+                                            stats.class_npa += 1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    _ => (),
+                }
+            }
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
