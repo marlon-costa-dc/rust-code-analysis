@@ -856,7 +856,29 @@ impl Loc for JavaCode {
     }
 }
 
-implement_metric_trait!(Loc, PreprocCode, CcommentCode, KotlinCode);
+implement_metric_trait!(Loc, PreprocCode, CcommentCode);
+
+impl Loc for KotlinCode {
+    fn compute(node: &Node, stats: &mut Stats, is_func_space: bool, is_unit: bool) {
+        use Kotlin::*;
+
+        let (start, end) = init(node, stats, is_func_space, is_unit);
+        let kind_id: Kotlin = node.kind_id().into();
+        match kind_id {
+            Comment => {
+                add_cloc_lines(stats, start, end);
+            }
+            Statements | Statement | LoopStatement | ForStatement | WhileStatement
+            | DoWhileStatement | StatementRepeat1 => {
+                stats.lloc.logical_lines += 1;
+            }
+            _ => {
+                check_comment_ends_on_code_line(stats, start);
+                stats.ploc.lines.insert(start);
+            }
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
