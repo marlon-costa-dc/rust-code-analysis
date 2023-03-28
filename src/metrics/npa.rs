@@ -2,6 +2,7 @@ use serde::Serialize;
 use serde::ser::{SerializeStruct, Serializer};
 use std::fmt;
 
+use crate::asttools::traverse_children;
 use crate::checker::Checker;
 use crate::langs::*;
 use crate::macros::implement_metric_trait;
@@ -284,20 +285,23 @@ impl Npa for KotlinCode {
                     Interface => stats.is_interface = true,
                     ClassBody => {
                         for node in class_child.children() {
-                            if matches!(node.kind_id().into(), PropertyDeclaration) {
-                                for modifiers in node.children() {
-                                    if matches!(modifiers.kind_id().into(), Modifiers)
-                                        && modifiers.child(0).map_or(false, |modifier| {
-                                            matches!(modifier.kind_id().into(), VisibilityModifier)
-                                                && modifier.first_child(|id| id == Public).is_some()
-                                        })
-                                    {
-                                        if stats.is_interface {
-                                            stats.interface_npa += 1;
-                                        } else {
-                                            stats.class_npa += 1;
-                                        }
-                                    }
+                            if node.kind_id() == PropertyDeclaration
+                                && traverse_children(
+                                    &node,
+                                    &[
+                                        |c| c == Modifiers,
+                                        |c| c == VisibilityModifier,
+                                        |c| c == Private || c == Protected,
+                                    ][..],
+                                )
+                                .is_none()
+                            {
+                                if stats.is_interface {
+                                    stats.interface_na += 1;
+                                    stats.interface_npa = stats.interface_na;
+                                } else {
+                                    stats.class_npa += 1;
+                                    stats.class_na = stats.class_npa;
                                 }
                             }
                         }
