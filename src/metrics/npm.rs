@@ -288,9 +288,11 @@ impl Npm for KotlinCode {
                                 .is_none()
                             {
                                 if stats.is_interface {
-                                    stats.interface_npm += 1;
+                                    stats.interface_nm += 1;
+                                    stats.interface_npm = stats.interface_nm;
                                 } else {
                                     stats.class_npm += 1;
+                                    stats.class_nm = stats.class_npm;
                                 }
                             }
                         }
