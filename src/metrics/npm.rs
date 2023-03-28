@@ -2,6 +2,7 @@ use serde::Serialize;
 use serde::ser::{SerializeStruct, Serializer};
 use std::fmt;
 
+use crate::asttools::traverse_children;
 use crate::checker::Checker;
 use crate::langs::*;
 use crate::macros::implement_metric_trait;
@@ -23,6 +24,7 @@ pub struct Stats {
     class_nm_sum: usize,
     interface_nm_sum: usize,
     is_class_space: bool,
+    is_interface: bool,
 }
 
 impl Serialize for Stats {
@@ -256,9 +258,49 @@ implement_metric_trait!(
     RustCode,
     CppCode,
     PreprocCode,
-    CcommentCode,
-    KotlinCode
+    CcommentCode
 );
+
+impl Npm for KotlinCode {
+    fn compute(node: &Node, stats: &mut Stats) {
+        use Kotlin::*;
+
+        // Enables the `Npm` metric if computing stats of a class space
+        if Self::is_func_space(node) && stats.is_disabled() {
+            stats.is_class_space = true;
+        }
+
+        if node.kind_id() == ClassDeclaration {
+            for class_child in node.children() {
+                match class_child.kind_id().into() {
+                    Interface => stats.is_interface = true,
+                    ClassBody => {
+                        for node in class_child.children() {
+                            if node.kind_id() == FunctionDeclaration
+                                && traverse_children(
+                                    &node,
+                                    &[
+                                        |c| c == Modifiers,
+                                        |c| c == VisibilityModifier,
+                                        |c| c == Private || c == Protected,
+                                    ][..],
+                                )
+                                .is_none()
+                            {
+                                if stats.is_interface {
+                                    stats.interface_npm += 1;
+                                } else {
+                                    stats.class_npm += 1;
+                                }
+                            }
+                        }
+                    }
+                    _ => (),
+                }
+            }
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
