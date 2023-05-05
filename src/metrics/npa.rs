@@ -24,7 +24,6 @@ pub struct Stats {
     class_na_sum: usize,
     interface_na_sum: usize,
     is_class_space: bool,
-    is_interface: bool,
 }
 
 impl Serialize for Stats {
@@ -279,36 +278,42 @@ impl Npa for KotlinCode {
             stats.is_class_space = true;
         }
 
-        if let ClassDeclaration = node.kind_id().into() {
-            for class_child in node.children() {
-                match class_child.kind_id().into() {
-                    Interface => stats.is_interface = true,
-                    ClassBody => {
-                        for node in class_child.children() {
-                            if node.kind_id() == PropertyDeclaration
-                                && traverse_children(
-                                    &node,
-                                    &[
-                                        |c| c == Modifiers,
-                                        |c| c == VisibilityModifier,
-                                        |c| c == Private || c == Protected,
-                                    ][..],
-                                )
-                                .is_none()
-                            {
-                                if stats.is_interface {
-                                    stats.interface_na += 1;
-                                    stats.interface_npa = stats.interface_na;
-                                } else {
-                                    stats.class_npa += 1;
-                                    stats.class_na = stats.class_npa;
-                                }
-                            }
+        match node.kind_id().into() {
+            ClassBody => {
+                // Check if this node is an interfaces
+                let mut is_interface = false;
+                let mut node_sibling = *node;
+                while let Some(prev_sibling) = node_sibling.previous_sibling() {
+                    if let Interface = prev_sibling.kind_id().into() {
+                        is_interface = true;
+                        break;
+                    }
+                    node_sibling = prev_sibling;
+                }
+
+                for node in node.children() {
+                    if node.kind_id() == PropertyDeclaration
+                        && traverse_children(
+                            &node,
+                            &[
+                                |c| c == Modifiers,
+                                |c| c == VisibilityModifier,
+                                |c| c == Private || c == Protected,
+                            ][..],
+                        )
+                        .is_none()
+                    {
+                        if is_interface {
+                            stats.interface_na += 1;
+                            stats.interface_npa = stats.interface_na;
+                        } else {
+                            stats.class_npa += 1;
+                            stats.class_na = stats.class_npa;
                         }
                     }
-                    _ => (),
                 }
             }
+            _ => (),
         }
     }
 }
