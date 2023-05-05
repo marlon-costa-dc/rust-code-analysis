@@ -269,41 +269,38 @@ impl Npm for KotlinCode {
             stats.is_class_space = true;
         }
 
-        match node.kind_id().into() {
-            ClassBody => {
-                // Check if this node is an interfaces
-                let mut is_interface = false;
-                let mut node_sibling = *node;
-                while let Some(prev_sibling) = node_sibling.previous_sibling() {
-                    if let Interface = prev_sibling.kind_id().into() {
-                        is_interface = true;
-                        break;
-                    }
-                    node_sibling = prev_sibling;
+        if node.kind_id() == ClassBody {
+            // Check if this node is an interfaces
+            let mut is_interface = false;
+            let mut node_sibling = *node;
+            while let Some(prev_sibling) = node_sibling.previous_sibling() {
+                if let Interface = prev_sibling.kind_id().into() {
+                    is_interface = true;
+                    break;
                 }
-                for child in node.children() {
-                    if child.kind_id() == FunctionDeclaration
-                        && traverse_children(
-                            &child,
-                            &[
-                                |c| c == Modifiers,
-                                |c| c == VisibilityModifier,
-                                |c| c == Private || c == Protected,
-                            ][..],
-                        )
-                        .is_none()
-                    {
-                        if is_interface {
-                            stats.interface_nm += 1;
-                            stats.interface_npm = stats.interface_nm;
-                        } else {
-                            stats.class_npm += 1;
-                            stats.class_nm = stats.class_npm;
-                        }
+                node_sibling = prev_sibling;
+            }
+            for child in node.children() {
+                if child.kind_id() == FunctionDeclaration
+                    && traverse_children(
+                        &child,
+                        &[
+                            |c| c == Modifiers,
+                            |c| c == VisibilityModifier,
+                            |c| c == Private || c == Protected,
+                        ][..],
+                    )
+                    .is_none()
+                {
+                    if is_interface {
+                        stats.interface_nm += 1;
+                        stats.interface_npm = stats.interface_nm;
+                    } else {
+                        stats.class_npm += 1;
+                        stats.class_nm = stats.class_npm;
                     }
                 }
             }
-            _ => (),
         }
     }
 }

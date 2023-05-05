@@ -278,42 +278,39 @@ impl Npa for KotlinCode {
             stats.is_class_space = true;
         }
 
-        match node.kind_id().into() {
-            ClassBody => {
-                // Check if this node is an interfaces
-                let mut is_interface = false;
-                let mut node_sibling = *node;
-                while let Some(prev_sibling) = node_sibling.previous_sibling() {
-                    if let Interface = prev_sibling.kind_id().into() {
-                        is_interface = true;
-                        break;
-                    }
-                    node_sibling = prev_sibling;
+        if node.kind_id() == ClassBody {
+            // Check if this node is an interfaces
+            let mut is_interface = false;
+            let mut node_sibling = *node;
+            while let Some(prev_sibling) = node_sibling.previous_sibling() {
+                if let Interface = prev_sibling.kind_id().into() {
+                    is_interface = true;
+                    break;
                 }
+                node_sibling = prev_sibling;
+            }
 
-                for node in node.children() {
-                    if node.kind_id() == PropertyDeclaration
-                        && traverse_children(
-                            &node,
-                            &[
-                                |c| c == Modifiers,
-                                |c| c == VisibilityModifier,
-                                |c| c == Private || c == Protected,
-                            ][..],
-                        )
-                        .is_none()
-                    {
-                        if is_interface {
-                            stats.interface_na += 1;
-                            stats.interface_npa = stats.interface_na;
-                        } else {
-                            stats.class_npa += 1;
-                            stats.class_na = stats.class_npa;
-                        }
+            for node in node.children() {
+                if node.kind_id() == PropertyDeclaration
+                    && traverse_children(
+                        &node,
+                        &[
+                            |c| c == Modifiers,
+                            |c| c == VisibilityModifier,
+                            |c| c == Private || c == Protected,
+                        ][..],
+                    )
+                    .is_none()
+                {
+                    if is_interface {
+                        stats.interface_na += 1;
+                        stats.interface_npa = stats.interface_na;
+                    } else {
+                        stats.class_npa += 1;
+                        stats.class_na = stats.class_npa;
                     }
                 }
             }
-            _ => (),
         }
     }
 }
