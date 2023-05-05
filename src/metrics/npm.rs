@@ -24,7 +24,6 @@ pub struct Stats {
     class_nm_sum: usize,
     interface_nm_sum: usize,
     is_class_space: bool,
-    is_interface: bool,
 }
 
 impl Serialize for Stats {
@@ -270,36 +269,41 @@ impl Npm for KotlinCode {
             stats.is_class_space = true;
         }
 
-        if node.kind_id() == ClassDeclaration {
-            for class_child in node.children() {
-                match class_child.kind_id().into() {
-                    Interface => stats.is_interface = true,
-                    ClassBody => {
-                        for node in class_child.children() {
-                            if node.kind_id() == FunctionDeclaration
-                                && traverse_children(
-                                    &node,
-                                    &[
-                                        |c| c == Modifiers,
-                                        |c| c == VisibilityModifier,
-                                        |c| c == Private || c == Protected,
-                                    ][..],
-                                )
-                                .is_none()
-                            {
-                                if stats.is_interface {
-                                    stats.interface_nm += 1;
-                                    stats.interface_npm = stats.interface_nm;
-                                } else {
-                                    stats.class_npm += 1;
-                                    stats.class_nm = stats.class_npm;
-                                }
-                            }
+        match node.kind_id().into() {
+            ClassBody => {
+                // Check if this node is an interfaces
+                let mut is_interface = false;
+                let mut node_sibling = *node;
+                while let Some(prev_sibling) = node_sibling.previous_sibling() {
+                    if let Interface = prev_sibling.kind_id().into() {
+                        is_interface = true;
+                        break;
+                    }
+                    node_sibling = prev_sibling;
+                }
+                for child in node.children() {
+                    if child.kind_id() == FunctionDeclaration
+                        && traverse_children(
+                            &child,
+                            &[
+                                |c| c == Modifiers,
+                                |c| c == VisibilityModifier,
+                                |c| c == Private || c == Protected,
+                            ][..],
+                        )
+                        .is_none()
+                    {
+                        if is_interface {
+                            stats.interface_nm += 1;
+                            stats.interface_npm = stats.interface_nm;
+                        } else {
+                            stats.class_npm += 1;
+                            stats.class_nm = stats.class_npm;
                         }
                     }
-                    _ => (),
                 }
             }
+            _ => (),
         }
     }
 }
