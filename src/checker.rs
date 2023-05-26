@@ -664,7 +664,7 @@ impl Checker for RustCode {
 
 impl Checker for KotlinCode {
     fn is_comment(node: &Node) -> bool {
-        node.object().kind_id() == Kotlin::Comment
+        node.kind_id() == Kotlin::Comment
     }
 
     fn is_useful_comment(_: &Node, _: &[u8]) -> bool {
@@ -673,13 +673,13 @@ impl Checker for KotlinCode {
 
     fn is_func_space(node: &Node) -> bool {
         matches!(
-            node.object().kind_id().into(),
+            node.kind_id().into(),
             Kotlin::SourceFile | Kotlin::FunctionDeclaration | Kotlin::LambdaLiteral
         )
     }
 
     fn is_func(node: &Node) -> bool {
-        node.object().kind_id() == Kotlin::FunctionDeclaration
+        node.kind_id() == Kotlin::FunctionDeclaration
     }
 
     fn is_closure(_: &Node) -> bool {
@@ -687,12 +687,12 @@ impl Checker for KotlinCode {
     }
 
     fn is_call(node: &Node) -> bool {
-        node.object().kind_id() == Kotlin::CallExpression
+        node.kind_id() == Kotlin::CallExpression
     }
 
     fn is_non_arg(node: &Node) -> bool {
         matches!(
-            node.object().kind_id().into(),
+            node.kind_id().into(),
             Kotlin::LPAREN
                 | Kotlin::COMMA
                 | Kotlin::RPAREN
@@ -703,16 +703,16 @@ impl Checker for KotlinCode {
 
     fn is_string(node: &Node) -> bool {
         matches!(
-            node.object().kind_id().into(),
+            node.kind_id().into(),
             Kotlin::StringLiteral | Kotlin::LineStringLiteral | Kotlin::MultiLineStringLiteral
         )
     }
 
     fn is_else_if(node: &Node) -> bool {
-        if node.object().kind_id() != Kotlin::IfExpression {
+        if node.kind_id() != Kotlin::IfExpression {
             return false;
         }
-        if let Some(parent) = node.object().parent() {
+        if let Some(parent) = node.parent() {
             return parent.kind_id() == Kotlin::Else;
         }
 

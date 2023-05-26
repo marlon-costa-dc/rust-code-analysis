@@ -580,7 +580,7 @@ impl Getter for KotlinCode {
     fn get_space_kind(node: &Node) -> SpaceKind {
         use Kotlin::*;
 
-        let typ = node.object().kind_id().into();
+        let typ = node.kind_id().into();
         match typ {
             ClassDeclaration => SpaceKind::Class,
             FunctionDeclaration | Constructor | AnnotatedLambda => SpaceKind::Function,
@@ -592,7 +592,7 @@ impl Getter for KotlinCode {
     fn get_op_type(node: &Node) -> HalsteadType {
         use Kotlin::*;
 
-        let typ = node.object().kind_id();
+        let typ = node.kind_id();
 
         match typ.into() {
             // Operator: function calls
