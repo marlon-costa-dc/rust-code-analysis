@@ -2,7 +2,6 @@ use serde::Serialize;
 use serde::ser::{SerializeStruct, Serializer};
 use std::fmt;
 
-use crate::asttools::traverse_children;
 use crate::checker::Checker;
 use crate::langs::*;
 use crate::macros::implement_metric_trait;
@@ -292,15 +291,15 @@ impl Npa for KotlinCode {
 
             for node in node.children() {
                 if node.kind_id() == PropertyDeclaration
-                    && traverse_children(
-                        &node,
-                        &[
-                            |c| c == Modifiers,
-                            |c| c == VisibilityModifier,
-                            |c| c == Private || c == Protected,
-                        ][..],
-                    )
-                    .is_none()
+                    && node
+                        .traverse_children(
+                            &[
+                                |c| c == Modifiers,
+                                |c| c == VisibilityModifier,
+                                |c| c == Private || c == Protected,
+                            ][..],
+                        )
+                        .is_none()
                 {
                     if is_interface {
                         stats.interface_na += 1;
