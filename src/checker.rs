@@ -674,7 +674,7 @@ impl Checker for KotlinCode {
     fn is_func_space(node: &Node) -> bool {
         matches!(
             node.kind_id().into(),
-            Kotlin::SourceFile | Kotlin::FunctionDeclaration | Kotlin::LambdaLiteral
+            Kotlin::SourceFile | Kotlin::ClassDeclaration
         )
     }
 
@@ -682,8 +682,8 @@ impl Checker for KotlinCode {
         node.kind_id() == Kotlin::FunctionDeclaration
     }
 
-    fn is_closure(_: &Node) -> bool {
-        false
+    fn is_closure(node: &Node) -> bool {
+        node.kind_id() == Kotlin::LambdaLiteral
     }
 
     fn is_call(node: &Node) -> bool {
