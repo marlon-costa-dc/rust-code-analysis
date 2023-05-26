@@ -607,10 +607,13 @@ impl Getter for KotlinCode {
             | EQ | LT | GT | BANG | QMARKCOLON | AsQMARK | COLON // no grammar for lambda operator ->
             | EQEQ | LTEQ | GTEQ | BANGEQ | AMPAMP | PIPEPIPE | PLUSPLUS | DASHDASH
             | PLUS | DASH | STAR | SLASH | PERCENT
-            | PLUSEQ | DASHEQ | STAREQ | SLASHEQ |  PERCENTEQ
+            | PLUSEQ | DASHEQ | STAREQ | SLASHEQ |  PERCENTEQ => {
+                HalsteadType::Operator
+            }
             // Operands: variables, constants, literals
-            | RealLiteral | IntegerLiteral | HexLiteral | BinLiteral |  CharacterLiteralToken1 | UniCharacterLiteralToken1
-            | LiteralConstant | StringLiteral | LineStringLiteral | MultiLineStringLiteral | LambdaLiteral | FunctionLiteral => {
+            RealLiteral | IntegerLiteral | HexLiteral | BinLiteral |  CharacterLiteralToken1 | UniCharacterLiteralToken1
+            | LiteralConstant | StringLiteral | LineStringLiteral | MultiLineStringLiteral | LambdaLiteral | FunctionLiteral
+            | ObjectLiteral | UnsignedLiteral | LongLiteral | BooleanLiteral | CharacterLiteral => {
                 HalsteadType::Operand
             },
             _ => {
