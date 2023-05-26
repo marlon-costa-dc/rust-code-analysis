@@ -193,6 +193,15 @@ fn compute_args<T: Checker>(node: &Node, nargs: &mut usize) {
     }
 }
 
+#[inline(always)]
+fn compute_kotlin_args(node: &Node, nargs: &mut usize) {
+    node.act_on_child(&mut |n| {
+        if n.kind_id() == Kotlin::Parameter {
+            *nargs += 1;
+        }
+    });
+}
+
 pub trait NArgs
 where
     Self: Checker,
@@ -229,6 +238,18 @@ impl NArgs for CppCode {
     }
 }
 
+impl NArgs for KotlinCode {
+    fn compute(node: &Node, stats: &mut Stats) {
+        if Self::is_func(node) {
+            compute_kotlin_args(node, &mut stats.fn_nargs);
+        }
+
+        if Self::is_closure(node) {
+            compute_kotlin_args(node, &mut stats.closure_nargs);
+        }
+    }
+}
+
 implement_metric_trait!(
     [NArgs],
     PythonCode,
@@ -239,8 +260,7 @@ implement_metric_trait!(
     RustCode,
     PreprocCode,
     CcommentCode,
-    JavaCode,
-    KotlinCode
+    JavaCode
 );
 
 #[cfg(test)]
