@@ -490,7 +490,45 @@ impl Cognitive for JavaCode {
     }
 }
 
-implement_metric_trait!(Cognitive, PreprocCode, CcommentCode, KotlinCode);
+impl Cognitive for KotlinCode {
+    fn compute(
+        node: &Node,
+        stats: &mut Stats,
+        nesting_map: &mut FxHashMap<usize, (usize, usize, usize)>,
+    ) {
+        use Kotlin::*;
+
+        //TODO: Implement macros
+        let (mut nesting, depth, mut lambda) = get_nesting_from_map(node, nesting_map);
+
+        match node.kind_id().into() {
+            IfExpression => {
+                if !Self::is_else_if(node) {
+                    increase_nesting(stats,&mut nesting, depth, lambda);
+                }
+            }
+            ForStatement | WhileStatement | DoWhileStatement | WhenExpression | CatchBlock  => {
+                increase_nesting(stats, &mut nesting, depth, lambda);
+            }
+            Else /* else-if also */ => {
+                increment_by_one(stats);
+            }
+            UnaryExpression => {
+                stats.boolean_seq.not_operator(node.kind_id());
+            }
+            BinaryExpression => {
+                compute_booleans::<language_kotlin::Kotlin>(node, stats, AMPAMP, PIPEPIPE);
+            }
+            LambdaLiteral => {
+                lambda += 1;
+            }
+            _ => {}
+        }
+        nesting_map.insert(node.id(), (nesting, depth, lambda));
+    }
+}
+
+implement_metric_trait!(Cognitive, PreprocCode, CcommentCode);
 
 #[cfg(test)]
 mod tests {
@@ -1756,7 +1794,7 @@ mod tests {
     fn java_single_branch_function() {
         check_metrics::<JavaParser>(
             "class X {
-                public static void print(boolean a){  
+                public static void print(boolean a){
                 if(a){ // +1
                   System.out.println(\"test1\");
                 }
@@ -1783,7 +1821,7 @@ mod tests {
     fn java_multiple_branch_function() {
         check_metrics::<JavaParser>(
             "class X {
-              public static void print(boolean a, boolean b){  
+              public static void print(boolean a, boolean b){
                 if(a){ // +1
                   System.out.println(\"test1\");
                 }
@@ -1816,7 +1854,7 @@ mod tests {
     fn java_compound_conditions() {
         check_metrics::<JavaParser>(
             "class X {
-              public static void print(boolean a, boolean b, boolean c, boolean d){  
+              public static void print(boolean a, boolean b, boolean c, boolean d){
                 if(a && b){ // +2 (+1 &&)
                   System.out.println(\"test1\");
                 }
