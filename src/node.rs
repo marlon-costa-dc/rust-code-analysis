@@ -18,7 +18,7 @@ impl Tree {
         Self(parser.parse(code, None).unwrap())
     }
 
-    pub(crate) fn get_root(&self) -> Node {
+    pub(crate) fn get_root(&self) -> Node<'_> {
         Node(self.0.root_node())
     }
 }
@@ -108,12 +108,12 @@ impl<'a> Node<'a> {
         self.0.child_count()
     }
 
-    pub(crate) fn child_by_field_name(&self, name: &str) -> Option<Node> {
+    pub(crate) fn child_by_field_name(&self, name: &str) -> Option<Node<'_>> {
         self.0.child_by_field_name(name).map(Node)
     }
 
     pub(crate) fn child(&self, pos: usize) -> Option<Node<'a>> {
-        self.0.child(pos).map(Node)
+        self.0.child(pos as u32).map(Node)
     }
 
     pub(crate) fn children(&self) -> impl ExactSizeIterator<Item = Node<'a>> + use<'a> {

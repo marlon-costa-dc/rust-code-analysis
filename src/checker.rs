@@ -664,7 +664,7 @@ impl Checker for RustCode {
 
 impl Checker for KotlinCode {
     fn is_comment(node: &Node) -> bool {
-        node.kind_id() == Kotlin::Comment
+        matches!(node.kind_id().into(), Kotlin::LineComment | Kotlin::MultilineComment)
     }
 
     fn is_useful_comment(_: &Node, _: &[u8]) -> bool {
@@ -702,10 +702,9 @@ impl Checker for KotlinCode {
     }
 
     fn is_string(node: &Node) -> bool {
-        matches!(
-            node.kind_id().into(),
-            Kotlin::StringLiteral | Kotlin::LineStringLiteral | Kotlin::MultiLineStringLiteral
-        )
+        // StringLiteral covers both single-line and multi-line strings in this grammar
+        // StringContent captures the text content within strings
+        matches!(node.kind_id().into(), Kotlin::StringLiteral | Kotlin::StringContent)
     }
 
     fn is_else_if(node: &Node) -> bool {

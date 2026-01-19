@@ -611,8 +611,9 @@ impl Getter for KotlinCode {
                 HalsteadType::Operator
             }
             // Operands: variables, constants, literals
-            RealLiteral | IntegerLiteral | HexLiteral | BinLiteral |  CharacterLiteralToken1 | UniCharacterLiteralToken1
-            | LiteralConstant | StringLiteral | LineStringLiteral | MultiLineStringLiteral | LambdaLiteral | FunctionLiteral
+            // StringLiteral covers both line strings and multi-line strings in this grammar
+            RealLiteral | IntegerLiteral | HexLiteral | BinLiteral | CharacterLiteralToken1 | UniCharacterLiteralToken1
+            | LiteralConstant | StringLiteral | StringContent | LambdaLiteral | FunctionLiteral
             | ObjectLiteral | UnsignedLiteral | LongLiteral | BooleanLiteral | CharacterLiteral => {
                 HalsteadType::Operand
             },

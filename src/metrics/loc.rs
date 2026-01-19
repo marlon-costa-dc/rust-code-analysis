@@ -865,11 +865,12 @@ impl Loc for KotlinCode {
         let (start, end) = init(node, stats, is_func_space, is_unit);
         let kind_id: Kotlin = node.kind_id().into();
         match kind_id {
-            Comment => {
+            // LineComment and MultilineComment cover all comment types in this grammar
+            LineComment | MultilineComment => {
                 add_cloc_lines(stats, start, end);
             }
-            Statements | Statement | LoopStatement | ForStatement | WhileStatement
-            | DoWhileStatement | StatementRepeat1 => {
+            // Statement types for logical lines counting
+            ForStatement | WhileStatement | DoWhileStatement => {
                 stats.lloc.logical_lines += 1;
             }
             _ => {

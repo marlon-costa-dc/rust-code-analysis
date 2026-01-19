@@ -494,7 +494,7 @@ impl Cognitive for KotlinCode {
     fn compute(
         node: &Node,
         stats: &mut Stats,
-        nesting_map: &mut FxHashMap<usize, (usize, usize, usize)>,
+        nesting_map: &mut HashMap<usize, (usize, usize, usize)>,
     ) {
         use Kotlin::*;
 
