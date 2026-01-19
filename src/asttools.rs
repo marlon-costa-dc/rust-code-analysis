@@ -145,8 +145,6 @@ macro_rules! count_specific_ancestors {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     #[test]
     fn test_get_parent_level_zero() {
         // Level 0 should return the same node
