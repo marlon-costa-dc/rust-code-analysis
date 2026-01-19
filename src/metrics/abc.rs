@@ -293,8 +293,7 @@ fn java_inspect_container(container_node: &Node, conditions: &mut f64) {
 
         // Parenthesized expressions and `Not` operators nodes
         // always store their expressions in the children nodes of index one
-        // https://github.com/tree-sitter/tree-sitter-java/blob/master/src/grammar.json#L2472
-        // https://github.com/tree-sitter/tree-sitter-java/blob/master/src/grammar.json#L2150
+        // Reference: tree-sitter-kotlin grammar for parenthesized_expression and prefix_expression
         node = node.child(1).unwrap();
         node_kind = node.kind_id().into();
 
@@ -440,7 +439,7 @@ impl Abc for JavaCode {
                     }
                 }
             }
-            // Counts unary conditions do-while statements
+            // Counts unary conditions inside do-while statements
             DoStatement => {
                 // The child node of index 3 contains the condition
                 if let Some(condition) = node.child(3) {
@@ -582,8 +581,7 @@ fn kotlin_inspect_container(container_node: &Node, conditions: &mut f64) {
 
         // Parenthesized expressions and `Not` operators nodes
         // always store their expressions in the children nodes of index one
-        // https://github.com/tree-sitter/tree-sitter-java/blob/master/src/grammar.json#L2472
-        // https://github.com/tree-sitter/tree-sitter-java/blob/master/src/grammar.json#L2150
+        // Reference: tree-sitter-kotlin grammar for parenthesized_expression and prefix_expression
         node = node.child(1).unwrap();
         node_kind = node.kind_id().into();
 
@@ -706,7 +704,7 @@ impl Abc for KotlinCode {
                     }
                 }
             }
-            // Counts unary conditions do-while statements
+            // Counts unary conditions inside do-while statements
             DoWhileStatement => {
                 // The child node of index 3 contains the condition
                 if let Some(condition) = node.child(3) {

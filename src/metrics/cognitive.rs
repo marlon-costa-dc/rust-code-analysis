@@ -318,11 +318,11 @@ impl Cognitive for RustCode {
             IfExpression => {
                 // Check if a node is not an else-if
                 if !Self::is_else_if(node) {
-                    increase_nesting(stats,&mut nesting, depth, lambda);
+                    increase_nesting(stats, &mut nesting, depth, lambda);
                 }
             }
             ForExpression | WhileExpression | MatchExpression => {
-                increase_nesting(stats,&mut nesting, depth, lambda);
+                increase_nesting(stats, &mut nesting, depth, lambda);
             }
             Else /*else-if also */ => {
                 increment_by_one(stats);
@@ -368,11 +368,11 @@ impl Cognitive for CppCode {
         match node.kind_id().into() {
             IfStatement => {
                 if !Self::is_else_if(node) {
-                    increase_nesting(stats,&mut nesting, depth, lambda);
+                    increase_nesting(stats, &mut nesting, depth, lambda);
                 }
             }
             ForStatement | WhileStatement | DoStatement | SwitchStatement | CatchClause => {
-                increase_nesting(stats,&mut nesting, depth, lambda);
+                increase_nesting(stats, &mut nesting, depth, lambda);
             }
             GotoStatement | Else /* else-if also */ => {
                 increment_by_one(stats);
@@ -401,11 +401,11 @@ macro_rules! js_cognitive {
             match node.kind_id().into() {
                 IfStatement => {
                     if !Self::is_else_if(&node) {
-                        increase_nesting(stats,&mut nesting, depth, lambda);
+                        increase_nesting(stats, &mut nesting, depth, lambda);
                     }
                 }
                 ForStatement | ForInStatement | WhileStatement | DoStatement | SwitchStatement | CatchClause | TernaryExpression => {
-                    increase_nesting(stats,&mut nesting, depth, lambda);
+                    increase_nesting(stats, &mut nesting, depth, lambda);
                 }
                 Else /* else-if also */ => {
                     increment_by_one(stats);
@@ -466,11 +466,11 @@ impl Cognitive for JavaCode {
         match node.kind_id().into() {
             IfStatement => {
                 if !Self::is_else_if(node) {
-                    increase_nesting(stats,&mut nesting, depth, lambda);
+                    increase_nesting(stats, &mut nesting, depth, lambda);
                 }
             }
             ForStatement | WhileStatement | DoStatement | SwitchBlock | CatchClause => {
-                increase_nesting(stats,&mut nesting, depth, lambda);
+                increase_nesting(stats, &mut nesting, depth, lambda);
             }
             Else /* else-if also */ => {
                 increment_by_one(stats);
@@ -504,7 +504,7 @@ impl Cognitive for KotlinCode {
         match node.kind_id().into() {
             IfExpression => {
                 if !Self::is_else_if(node) {
-                    increase_nesting(stats,&mut nesting, depth, lambda);
+                    increase_nesting(stats, &mut nesting, depth, lambda);
                 }
             }
             ForStatement | WhileStatement | DoWhileStatement | WhenExpression | CatchBlock  => {

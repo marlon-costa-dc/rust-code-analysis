@@ -278,7 +278,7 @@ impl Npa for KotlinCode {
         }
 
         if node.kind_id() == ClassBody {
-            // Check if this node is an interfaces
+            // Check if this node is an interface
             let mut is_interface = false;
             let mut node_sibling = *node;
             while let Some(prev_sibling) = node_sibling.previous_sibling() {
