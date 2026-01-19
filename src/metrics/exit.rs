@@ -321,13 +321,14 @@ mod tests {
                 // 2 functions
                 insta::assert_json_snapshot!(
                     metric.nexits,
-                    @r###"
-                    {
-                      "sum": 2.0,
-                      "average": 1.0,
-                      "min": 0.0,
-                      "max": 1.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 2.0,
+                  "average": 1.0,
+                  "min": 0.0,
+                  "max": 1.0
+                }
+                "#
                 );
             },
         );
@@ -347,13 +348,14 @@ mod tests {
                 // 2 functions + 2 lambdas = 4
                 insta::assert_json_snapshot!(
                     metric.nexits,
-                    @r###"
-                    {
-                      "sum": 2.0,
-                      "average": 0.5,
-                      "min": 0.0,
-                      "max": 1.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 2.0,
+                  "average": 0.5,
+                  "min": 0.0,
+                  "max": 1.0
+                }
+                "#
                 );
             },
         );

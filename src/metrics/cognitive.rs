@@ -612,13 +612,14 @@ mod tests {
             |metric| {
                 insta::assert_json_snapshot!(
                     metric.cognitive,
-                    @r###"
-                    {
-                      "sum": 4.0,
-                      "average": 4.0,
-                      "min": 0.0,
-                      "max": 4.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 4.0,
+                  "average": 4.0,
+                  "min": 0.0,
+                  "max": 4.0
+                }
+                "#
                 );
             },
         );
@@ -635,13 +636,14 @@ mod tests {
             |metric| {
                 insta::assert_json_snapshot!(
                     metric.cognitive,
-                    @r###"
-                    {
-                      "sum": 1.0,
-                      "average": 1.0,
-                      "min": 0.0,
-                      "max": 1.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 1.0,
+                  "average": 1.0,
+                  "min": 0.0,
+                  "max": 1.0
+                }
+                "#
                 );
             },
         );
@@ -658,13 +660,14 @@ mod tests {
             |metric| {
                 insta::assert_json_snapshot!(
                     metric.cognitive,
-                    @r###"
-                    {
-                      "sum": 2.0,
-                      "average": 2.0,
-                      "min": 0.0,
-                      "max": 2.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 2.0,
+                  "average": 2.0,
+                  "min": 0.0,
+                  "max": 2.0
+                }
+                "#
                 );
             },
         );
@@ -684,13 +687,14 @@ mod tests {
             |metric| {
                 insta::assert_json_snapshot!(
                     metric.cognitive,
-                    @r###"
-                    {
-                      "sum": 4.0,
-                      "average": 4.0,
-                      "min": 0.0,
-                      "max": 4.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 4.0,
+                  "average": 4.0,
+                  "min": 0.0,
+                  "max": 4.0
+                }
+                "#
                 );
             },
         );
@@ -712,13 +716,14 @@ mod tests {
             |metric| {
                 insta::assert_json_snapshot!(
                     metric.cognitive,
-                    @r###"
-                    {
-                      "sum": 6.0,
-                      "average": 6.0,
-                      "min": 0.0,
-                      "max": 6.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 6.0,
+                  "average": 6.0,
+                  "min": 0.0,
+                  "max": 6.0
+                }
+                "#
                 );
             },
         );
@@ -815,13 +820,14 @@ mod tests {
             |metric| {
                 insta::assert_json_snapshot!(
                     metric.cognitive,
-                    @r###"
-                    {
-                      "sum": 2.0,
-                      "average": 2.0,
-                      "min": 0.0,
-                      "max": 2.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 2.0,
+                  "average": 2.0,
+                  "min": 0.0,
+                  "max": 2.0
+                }
+                "#
                 );
             },
         );
@@ -1128,13 +1134,14 @@ mod tests {
             |metric| {
                 insta::assert_json_snapshot!(
                     metric.cognitive,
-                    @r###"
-                    {
-                      "sum": 3.0,
-                      "average": 3.0,
-                      "min": 0.0,
-                      "max": 3.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 3.0,
+                  "average": 3.0,
+                  "min": 0.0,
+                  "max": 3.0
+                }
+                "#
                 );
             },
         );
@@ -1225,13 +1232,14 @@ mod tests {
             |metric| {
                 insta::assert_json_snapshot!(
                     metric.cognitive,
-                    @r###"
-                    {
-                      "sum": 3.0,
-                      "average": 3.0,
-                      "min": 0.0,
-                      "max": 3.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 3.0,
+                  "average": 3.0,
+                  "min": 0.0,
+                  "max": 3.0
+                }
+                "#
                 );
             },
         );
@@ -1641,13 +1649,14 @@ mod tests {
             |metric| {
                 insta::assert_json_snapshot!(
                     metric.cognitive,
-                    @r###"
-                    {
-                      "sum": 4.0,
-                      "average": 4.0,
-                      "min": 0.0,
-                      "max": 4.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 4.0,
+                  "average": 4.0,
+                  "min": 0.0,
+                  "max": 4.0
+                }
+                "#
                 );
             },
         );
@@ -1668,13 +1677,14 @@ mod tests {
                 // 2 functions + 2 lambdas = 4
                 insta::assert_json_snapshot!(
                     metric.cognitive,
-                    @r###"
-                    {
-                      "sum": 5.0,
-                      "average": 1.25,
-                      "min": 0.0,
-                      "max": 3.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 5.0,
+                  "average": 1.25,
+                  "min": 0.0,
+                  "max": 3.0
+                }
+                "#
                 );
             },
         );
@@ -1701,13 +1711,14 @@ mod tests {
             |metric| {
                 insta::assert_json_snapshot!(
                     metric.cognitive,
-                    @r###"
-                    {
-                      "sum": 9.0,
-                      "average": 9.0,
-                      "min": 0.0,
-                      "max": 9.0
-                    }"###
+                    @r#"
+                {
+                  "sum": 9.0,
+                  "average": 9.0,
+                  "min": 0.0,
+                  "max": 9.0
+                }
+                "#
                 );
             },
         );

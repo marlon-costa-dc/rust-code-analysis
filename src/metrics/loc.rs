@@ -1107,29 +1107,30 @@ mod tests {
                 // Spaces: 2
                 insta::assert_json_snapshot!(
                     metric.loc,
-                    @r###"
-                    {
-                      "sloc": 10.0,
-                      "ploc": 7.0,
-                      "lloc": 6.0,
-                      "cloc": 4.0,
-                      "blank": 1.0,
-                      "sloc_average": 5.0,
-                      "ploc_average": 3.5,
-                      "lloc_average": 3.0,
-                      "cloc_average": 2.0,
-                      "blank_average": 0.5,
-                      "sloc_min": 10.0,
-                      "sloc_max": 10.0,
-                      "cloc_min": 4.0,
-                      "cloc_max": 4.0,
-                      "ploc_min": 7.0,
-                      "ploc_max": 7.0,
-                      "lloc_min": 6.0,
-                      "lloc_max": 6.0,
-                      "blank_min": 1.0,
-                      "blank_max": 1.0
-                    }"###
+                    @r#"
+                {
+                  "sloc": 10.0,
+                  "ploc": 7.0,
+                  "lloc": 6.0,
+                  "cloc": 4.0,
+                  "blank": 1.0,
+                  "sloc_average": 5.0,
+                  "ploc_average": 3.5,
+                  "lloc_average": 3.0,
+                  "cloc_average": 2.0,
+                  "blank_average": 0.5,
+                  "sloc_min": 10.0,
+                  "sloc_max": 10.0,
+                  "cloc_min": 4.0,
+                  "cloc_max": 4.0,
+                  "ploc_min": 7.0,
+                  "ploc_max": 7.0,
+                  "lloc_min": 6.0,
+                  "lloc_max": 6.0,
+                  "blank_min": 1.0,
+                  "blank_max": 1.0
+                }
+                "#
                 );
             },
         );
@@ -1154,29 +1155,30 @@ mod tests {
                 // Spaces: 2
                 insta::assert_json_snapshot!(
                     metric.loc,
-                    @r###"
-                    {
-                      "sloc": 9.0,
-                      "ploc": 7.0,
-                      "lloc": 6.0,
-                      "cloc": 4.0,
-                      "blank": 0.0,
-                      "sloc_average": 4.5,
-                      "ploc_average": 3.5,
-                      "lloc_average": 3.0,
-                      "cloc_average": 2.0,
-                      "blank_average": 0.0,
-                      "sloc_min": 9.0,
-                      "sloc_max": 9.0,
-                      "cloc_min": 4.0,
-                      "cloc_max": 4.0,
-                      "ploc_min": 7.0,
-                      "ploc_max": 7.0,
-                      "lloc_min": 6.0,
-                      "lloc_max": 6.0,
-                      "blank_min": 0.0,
-                      "blank_max": 0.0
-                    }"###
+                    @r#"
+                {
+                  "sloc": 9.0,
+                  "ploc": 7.0,
+                  "lloc": 6.0,
+                  "cloc": 4.0,
+                  "blank": 0.0,
+                  "sloc_average": 4.5,
+                  "ploc_average": 3.5,
+                  "lloc_average": 3.0,
+                  "cloc_average": 2.0,
+                  "blank_average": 0.0,
+                  "sloc_min": 9.0,
+                  "sloc_max": 9.0,
+                  "cloc_min": 4.0,
+                  "cloc_max": 4.0,
+                  "ploc_min": 7.0,
+                  "ploc_max": 7.0,
+                  "lloc_min": 6.0,
+                  "lloc_max": 6.0,
+                  "blank_min": 0.0,
+                  "blank_max": 0.0
+                }
+                "#
                 );
             },
         );
@@ -1202,29 +1204,30 @@ mod tests {
                 // Spaces: 2
                 insta::assert_json_snapshot!(
                     metric.loc,
-                    @r###"
-                    {
-                      "sloc": 10.0,
-                      "ploc": 7.0,
-                      "lloc": 6.0,
-                      "cloc": 5.0,
-                      "blank": 1.0,
-                      "sloc_average": 5.0,
-                      "ploc_average": 3.5,
-                      "lloc_average": 3.0,
-                      "cloc_average": 2.5,
-                      "blank_average": 0.5,
-                      "sloc_min": 10.0,
-                      "sloc_max": 10.0,
-                      "cloc_min": 5.0,
-                      "cloc_max": 5.0,
-                      "ploc_min": 7.0,
-                      "ploc_max": 7.0,
-                      "lloc_min": 6.0,
-                      "lloc_max": 6.0,
-                      "blank_min": 1.0,
-                      "blank_max": 1.0
-                    }"###
+                    @r#"
+                {
+                  "sloc": 10.0,
+                  "ploc": 7.0,
+                  "lloc": 6.0,
+                  "cloc": 5.0,
+                  "blank": 1.0,
+                  "sloc_average": 5.0,
+                  "ploc_average": 3.5,
+                  "lloc_average": 3.0,
+                  "cloc_average": 2.5,
+                  "blank_average": 0.5,
+                  "sloc_min": 10.0,
+                  "sloc_max": 10.0,
+                  "cloc_min": 5.0,
+                  "cloc_max": 5.0,
+                  "ploc_min": 7.0,
+                  "ploc_max": 7.0,
+                  "lloc_min": 6.0,
+                  "lloc_max": 6.0,
+                  "blank_min": 1.0,
+                  "blank_max": 1.0
+                }
+                "#
                 );
             },
         );
@@ -1300,29 +1303,30 @@ mod tests {
                 // Spaces: 2
                 insta::assert_json_snapshot!(
                     metric.loc,
-                    @r###"
-                    {
-                      "sloc": 11.0,
-                      "ploc": 8.0,
-                      "lloc": 1.0,
-                      "cloc": 4.0,
-                      "blank": 1.0,
-                      "sloc_average": 5.5,
-                      "ploc_average": 4.0,
-                      "lloc_average": 0.5,
-                      "cloc_average": 2.0,
-                      "blank_average": 0.5,
-                      "sloc_min": 11.0,
-                      "sloc_max": 11.0,
-                      "cloc_min": 4.0,
-                      "cloc_max": 4.0,
-                      "ploc_min": 8.0,
-                      "ploc_max": 8.0,
-                      "lloc_min": 1.0,
-                      "lloc_max": 1.0,
-                      "blank_min": 1.0,
-                      "blank_max": 1.0
-                    }"###
+                    @r#"
+                {
+                  "sloc": 11.0,
+                  "ploc": 8.0,
+                  "lloc": 1.0,
+                  "cloc": 4.0,
+                  "blank": 1.0,
+                  "sloc_average": 5.5,
+                  "ploc_average": 4.0,
+                  "lloc_average": 0.5,
+                  "cloc_average": 2.0,
+                  "blank_average": 0.5,
+                  "sloc_min": 11.0,
+                  "sloc_max": 11.0,
+                  "cloc_min": 4.0,
+                  "cloc_max": 4.0,
+                  "ploc_min": 8.0,
+                  "ploc_max": 8.0,
+                  "lloc_min": 1.0,
+                  "lloc_max": 1.0,
+                  "blank_min": 1.0,
+                  "blank_max": 1.0
+                }
+                "#
                 );
             },
         );
@@ -1589,29 +1593,30 @@ mod tests {
                 // Spaces: 1
                 insta::assert_json_snapshot!(
                     metric.loc,
-                    @r###"
-                    {
-                      "sloc": 5.0,
-                      "ploc": 1.0,
-                      "lloc": 2.0,
-                      "cloc": 5.0,
-                      "blank": 0.0,
-                      "sloc_average": 5.0,
-                      "ploc_average": 1.0,
-                      "lloc_average": 2.0,
-                      "cloc_average": 5.0,
-                      "blank_average": 0.0,
-                      "sloc_min": 5.0,
-                      "sloc_max": 5.0,
-                      "cloc_min": 5.0,
-                      "cloc_max": 5.0,
-                      "ploc_min": 1.0,
-                      "ploc_max": 1.0,
-                      "lloc_min": 2.0,
-                      "lloc_max": 2.0,
-                      "blank_min": 0.0,
-                      "blank_max": 0.0
-                    }"###
+                    @r#"
+                {
+                  "sloc": 5.0,
+                  "ploc": 1.0,
+                  "lloc": 2.0,
+                  "cloc": 5.0,
+                  "blank": 0.0,
+                  "sloc_average": 5.0,
+                  "ploc_average": 1.0,
+                  "lloc_average": 2.0,
+                  "cloc_average": 5.0,
+                  "blank_average": 0.0,
+                  "sloc_min": 5.0,
+                  "sloc_max": 5.0,
+                  "cloc_min": 5.0,
+                  "cloc_max": 5.0,
+                  "ploc_min": 1.0,
+                  "ploc_max": 1.0,
+                  "lloc_min": 2.0,
+                  "lloc_max": 2.0,
+                  "blank_min": 0.0,
+                  "blank_max": 0.0
+                }
+                "#
                 );
             },
         );
@@ -2475,29 +2480,30 @@ mod tests {
                 // Spaces: 2
                 insta::assert_json_snapshot!(
                     metric.loc,
-                    @r###"
-                    {
-                      "sloc": 6.0,
-                      "ploc": 6.0,
-                      "lloc": 3.0,
-                      "cloc": 0.0,
-                      "blank": 0.0,
-                      "sloc_average": 3.0,
-                      "ploc_average": 3.0,
-                      "lloc_average": 1.5,
-                      "cloc_average": 0.0,
-                      "blank_average": 0.0,
-                      "sloc_min": 6.0,
-                      "sloc_max": 6.0,
-                      "cloc_min": 0.0,
-                      "cloc_max": 0.0,
-                      "ploc_min": 6.0,
-                      "ploc_max": 6.0,
-                      "lloc_min": 3.0,
-                      "lloc_max": 3.0,
-                      "blank_min": 0.0,
-                      "blank_max": 0.0
-                    }"###
+                    @r#"
+                {
+                  "sloc": 6.0,
+                  "ploc": 6.0,
+                  "lloc": 3.0,
+                  "cloc": 0.0,
+                  "blank": 0.0,
+                  "sloc_average": 3.0,
+                  "ploc_average": 3.0,
+                  "lloc_average": 1.5,
+                  "cloc_average": 0.0,
+                  "blank_average": 0.0,
+                  "sloc_min": 6.0,
+                  "sloc_max": 6.0,
+                  "cloc_min": 0.0,
+                  "cloc_max": 0.0,
+                  "ploc_min": 6.0,
+                  "ploc_max": 6.0,
+                  "lloc_min": 3.0,
+                  "lloc_max": 3.0,
+                  "blank_min": 0.0,
+                  "blank_max": 0.0
+                }
+                "#
                 );
             },
         );
@@ -2527,29 +2533,30 @@ mod tests {
                 // Spaces: 2
                 insta::assert_json_snapshot!(
                     metric.loc,
-                    @r###"
-                    {
-                      "sloc": 16.0,
-                      "ploc": 9.0,
-                      "lloc": 8.0,
-                      "cloc": 7.0,
-                      "blank": 0.0,
-                      "sloc_average": 8.0,
-                      "ploc_average": 4.5,
-                      "lloc_average": 4.0,
-                      "cloc_average": 3.5,
-                      "blank_average": 0.0,
-                      "sloc_min": 16.0,
-                      "sloc_max": 16.0,
-                      "cloc_min": 7.0,
-                      "cloc_max": 7.0,
-                      "ploc_min": 9.0,
-                      "ploc_max": 9.0,
-                      "lloc_min": 8.0,
-                      "lloc_max": 8.0,
-                      "blank_min": 0.0,
-                      "blank_max": 0.0
-                    }"###
+                    @r#"
+                {
+                  "sloc": 16.0,
+                  "ploc": 9.0,
+                  "lloc": 8.0,
+                  "cloc": 7.0,
+                  "blank": 0.0,
+                  "sloc_average": 8.0,
+                  "ploc_average": 4.5,
+                  "lloc_average": 4.0,
+                  "cloc_average": 3.5,
+                  "blank_average": 0.0,
+                  "sloc_min": 16.0,
+                  "sloc_max": 16.0,
+                  "cloc_min": 7.0,
+                  "cloc_max": 7.0,
+                  "ploc_min": 9.0,
+                  "ploc_max": 9.0,
+                  "lloc_min": 8.0,
+                  "lloc_max": 8.0,
+                  "blank_min": 0.0,
+                  "blank_max": 0.0
+                }
+                "#
                 );
             },
         );
@@ -2568,29 +2575,30 @@ mod tests {
                 // Spaces: 2
                 insta::assert_json_snapshot!(
                     metric.loc,
-                    @r###"
-                    {
-                      "sloc": 5.0,
-                      "ploc": 5.0,
-                      "lloc": 6.0,
-                      "cloc": 0.0,
-                      "blank": 0.0,
-                      "sloc_average": 2.5,
-                      "ploc_average": 2.5,
-                      "lloc_average": 3.0,
-                      "cloc_average": 0.0,
-                      "blank_average": 0.0,
-                      "sloc_min": 5.0,
-                      "sloc_max": 5.0,
-                      "cloc_min": 0.0,
-                      "cloc_max": 0.0,
-                      "ploc_min": 5.0,
-                      "ploc_max": 5.0,
-                      "lloc_min": 5.0,
-                      "lloc_max": 5.0,
-                      "blank_min": 0.0,
-                      "blank_max": 0.0
-                    }"###
+                    @r#"
+                {
+                  "sloc": 5.0,
+                  "ploc": 5.0,
+                  "lloc": 6.0,
+                  "cloc": 0.0,
+                  "blank": 0.0,
+                  "sloc_average": 2.5,
+                  "ploc_average": 2.5,
+                  "lloc_average": 3.0,
+                  "cloc_average": 0.0,
+                  "blank_average": 0.0,
+                  "sloc_min": 5.0,
+                  "sloc_max": 5.0,
+                  "cloc_min": 0.0,
+                  "cloc_max": 0.0,
+                  "ploc_min": 5.0,
+                  "ploc_max": 5.0,
+                  "lloc_min": 5.0,
+                  "lloc_max": 5.0,
+                  "blank_min": 0.0,
+                  "blank_max": 0.0
+                }
+                "#
                 );
             },
         );

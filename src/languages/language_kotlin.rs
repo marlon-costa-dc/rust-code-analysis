@@ -365,6 +365,7 @@ pub enum Kotlin {
     InterpolatedIdentifier = 358,
     TypeIdentifier = 359,
     Error = 360,
+    
 }
 
 impl From<Kotlin> for &'static str {
@@ -702,9 +703,7 @@ impl From<Kotlin> for &'static str {
             Kotlin::ImportListRepeat1 => "import_list_repeat1",
             Kotlin::ClassParametersRepeat1 => "_class_parameters_repeat1",
             Kotlin::DelegationSpecifiersRepeat1 => "_delegation_specifiers_repeat1",
-            Kotlin::AnnotatedDelegationSpecifierRepeat1 => {
-                "_annotated_delegation_specifier_repeat1"
-            }
+            Kotlin::AnnotatedDelegationSpecifierRepeat1 => "_annotated_delegation_specifier_repeat1",
             Kotlin::TypeParametersRepeat1 => "type_parameters_repeat1",
             Kotlin::TypeConstraintsRepeat1 => "type_constraints_repeat1",
             Kotlin::FunctionValueParametersRepeat1 => "function_value_parameters_repeat1",
@@ -734,6 +733,7 @@ impl From<Kotlin> for &'static str {
             Kotlin::InterpolatedIdentifier => "interpolated_identifier",
             Kotlin::TypeIdentifier => "type_identifier",
             Kotlin::Error => "ERROR",
+            
         }
     }
 }

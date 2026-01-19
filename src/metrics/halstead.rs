@@ -476,23 +476,24 @@ mod tests {
                 // unique operands: main, a, b, c, avg, 3, 5, console.log, console, log, "{}"
                 insta::assert_json_snapshot!(
                     metric.halstead,
-                    @r###"
-                    {
-                      "n1": 10.0,
-                      "N1": 24.0,
-                      "n2": 11.0,
-                      "N2": 21.0,
-                      "length": 45.0,
-                      "estimated_program_length": 71.27302875388389,
-                      "purity_ratio": 1.583845083419642,
-                      "vocabulary": 21.0,
-                      "volume": 197.65428402504423,
-                      "difficulty": 9.545454545454545,
-                      "level": 0.10476190476190476,
-                      "effort": 1886.699983875422,
-                      "time": 104.81666577085679,
-                      "bugs": 0.05089564733125986
-                    }"###
+                    @r#"
+                {
+                  "n1": 10.0,
+                  "N1": 24.0,
+                  "n2": 11.0,
+                  "N2": 21.0,
+                  "length": 45.0,
+                  "estimated_program_length": 71.27302875388389,
+                  "purity_ratio": 1.583845083419642,
+                  "vocabulary": 21.0,
+                  "volume": 197.65428402504423,
+                  "difficulty": 9.545454545454545,
+                  "level": 0.10476190476190476,
+                  "effort": 1886.699983875422,
+                  "time": 104.81666577085679,
+                  "bugs": 0.05089564733125986
+                }
+                "#
                 );
             },
         );
