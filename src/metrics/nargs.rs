@@ -232,7 +232,8 @@ impl NArgs for CppCode {
         if Self::is_closure(node)
             && let Some(declarator) = node.child_by_field_name("declarator")
         {
-            compute_args::<Self>(&declarator, &mut stats.closure_nargs);
+            let new_node = declarator;
+            compute_args::<Self>(&new_node, &mut stats.closure_nargs);
         }
     }
 }
