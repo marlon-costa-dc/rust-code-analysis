@@ -183,6 +183,21 @@ impl<'a> Node<'a> {
         }
         res
     }
+
+    /// Checks if this node has any ancestor that meets the given predicate.
+    ///
+    /// Traverses up the tree from this node's parent to the root,
+    /// returning true if any ancestor satisfies the predicate.
+    pub fn has_ancestor<F: Fn(&Node) -> bool>(&self, pred: F) -> bool {
+        let mut node = *self;
+        while let Some(parent) = node.parent() {
+            if pred(&parent) {
+                return true;
+            }
+            node = parent;
+        }
+        false
+    }
 }
 
 /// An `AST` cursor.
@@ -234,6 +249,35 @@ impl<'a> Search<'a> for Node<'a> {
         }
 
         None
+    }
+
+    fn all_occurrences(&self, pred: fn(u16) -> bool) -> Vec<Node<'a>> {
+        let mut cursor = self.cursor();
+        let mut stack = Vec::new();
+        let mut children = Vec::new();
+        let mut results = Vec::new();
+
+        stack.push(*self);
+
+        while let Some(node) = stack.pop() {
+            if pred(node.kind_id()) {
+                results.push(node);
+            }
+            cursor.reset(&node);
+            if cursor.goto_first_child() {
+                loop {
+                    children.push(cursor.node());
+                    if !cursor.goto_next_sibling() {
+                        break;
+                    }
+                }
+                for child in children.drain(..).rev() {
+                    stack.push(child);
+                }
+            }
+        }
+
+        results
     }
 
     fn act_on_node(&self, action: &mut dyn FnMut(&Node<'a>)) {
