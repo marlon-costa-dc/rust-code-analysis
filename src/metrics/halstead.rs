@@ -328,7 +328,13 @@ impl Halstead for JavaCode {
     }
 }
 
-implement_metric_trait!(Halstead, KotlinCode, PreprocCode, CcommentCode);
+impl Halstead for KotlinCode {
+    fn compute<'a>(node: &Node<'a>, code: &'a [u8], halstead_maps: &mut HalsteadMaps<'a>) {
+        compute_halstead::<Self>(node, code, halstead_maps);
+    }
+}
+
+implement_metric_trait!(Halstead, PreprocCode, CcommentCode);
 
 #[cfg(test)]
 mod tests {

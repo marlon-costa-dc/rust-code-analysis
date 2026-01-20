@@ -182,7 +182,15 @@ impl Exit for JavaCode {
     }
 }
 
-implement_metric_trait!(Exit, KotlinCode, PreprocCode, CcommentCode);
+impl Exit for KotlinCode {
+    fn compute(node: &Node, stats: &mut Stats) {
+        if matches!(node.kind_id().into(), Kotlin::Return) {
+            stats.exit += 1;
+        }
+    }
+}
+
+implement_metric_trait!(Exit, PreprocCode, CcommentCode);
 
 #[cfg(test)]
 mod tests {

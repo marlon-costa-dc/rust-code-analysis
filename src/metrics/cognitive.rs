@@ -490,7 +490,45 @@ impl Cognitive for JavaCode {
     }
 }
 
-implement_metric_trait!(Cognitive, PreprocCode, CcommentCode, KotlinCode);
+impl Cognitive for KotlinCode {
+    fn compute(
+        node: &Node,
+        stats: &mut Stats,
+        nesting_map: &mut HashMap<usize, (usize, usize, usize)>,
+    ) {
+        use Kotlin::*;
+
+        //TODO: Implement macros
+        let (mut nesting, depth, mut lambda) = get_nesting_from_map(node, nesting_map);
+
+        match node.kind_id().into() {
+            IfExpression => {
+                if !Self::is_else_if(node) {
+                    increase_nesting(stats, &mut nesting, depth, lambda);
+                }
+            }
+            ForStatement | WhileStatement | DoWhileStatement | WhenExpression | CatchBlock  => {
+                increase_nesting(stats, &mut nesting, depth, lambda);
+            }
+            Else /* else-if also */ => {
+                increment_by_one(stats);
+            }
+            UnaryExpression => {
+                stats.boolean_seq.not_operator(node.kind_id());
+            }
+            BinaryExpression => {
+                compute_booleans::<language_kotlin::Kotlin>(node, stats, AMPAMP, PIPEPIPE);
+            }
+            LambdaLiteral => {
+                lambda += 1;
+            }
+            _ => {}
+        }
+        nesting_map.insert(node.id(), (nesting, depth, lambda));
+    }
+}
+
+implement_metric_trait!(Cognitive, PreprocCode, CcommentCode);
 
 #[cfg(test)]
 mod tests {
