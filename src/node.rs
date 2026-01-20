@@ -251,6 +251,8 @@ impl<'a> Search<'a> for Node<'a> {
         None
     }
 
+    /// Performs a depth-first search starting from this node (including `self`)
+    /// and returns all descendant nodes whose `kind_id` satisfies the given predicate.
     fn all_occurrences(&self, pred: fn(u16) -> bool) -> Vec<Node<'a>> {
         let mut cursor = self.cursor();
         let mut stack = Vec::new();
