@@ -186,8 +186,14 @@ impl<'a> Node<'a> {
 
     /// Checks if this node has any ancestor that meets the given predicate.
     ///
-    /// Traverses up the tree from this node's parent to the root,
-    /// returning true if any ancestor satisfies the predicate.
+    /// This method walks up the tree from this node's parent to the root,
+    /// returning `true` as soon as it finds any ancestor for which `pred`
+    /// returns `true`.
+    ///
+    /// Note: This differs from [`Node::has_ancestors`], which checks for a
+    /// specific pattern of ancestors (immediate parent and grandparent
+    /// satisfying two separate predicates). `has_ancestor` instead uses a
+    /// single predicate and considers all ancestors in the hierarchy.
     pub fn has_ancestor<F: Fn(&Node) -> bool>(&self, pred: F) -> bool {
         let mut node = *self;
         while let Some(parent) = node.parent() {
