@@ -463,7 +463,6 @@ impl Getter for CppCode {
                             _ => {}
                         }
                     }
-                }
             }
             _ => {
                 if let Some(name) = node.child_by_field_name("name") {
