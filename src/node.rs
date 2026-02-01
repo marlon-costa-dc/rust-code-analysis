@@ -246,6 +246,78 @@ impl<'a> Node<'a> {
         false
     }
 
+    /// Finds all descendant nodes (including self) that satisfy the given predicate.
+    ///
+    /// Performs a depth-first traversal using an explicit stack (no recursion),
+    /// collecting all nodes where `pred` returns `true`. The traversal includes
+    /// this node if it matches the predicate.
+    ///
+    /// # Algorithm
+    ///
+    /// Uses stack-based iteration rather than recursion to avoid stack overflow
+    /// on deeply nested trees. Traverses in pre-order (parent before children).
+    ///
+    /// # Examples
+    ///
+    /// ```ignore
+    /// use rust_code_analysis::Node;
+    ///
+    /// // Find all function definitions in a subtree
+    /// let functions = node.find_all(|n| n.kind() == "function_definition");
+    ///
+    /// // Find all identifiers
+    /// let identifiers = node.find_all(|n| n.kind() == "identifier");
+    ///
+    /// // Find nodes matching multiple criteria
+    /// let loops = node.find_all(|n| {
+    ///     matches!(n.kind(), "for_statement" | "while_statement" | "loop_expression")
+    /// });
+    /// ```
+    ///
+    /// # Arguments
+    ///
+    /// * `pred` - A closure that takes a reference to a `Node` and returns `true`
+    ///   if the node should be included in the results.
+    ///
+    /// # Returns
+    ///
+    /// A `Vec<Node>` containing all matching nodes in pre-order traversal order.
+    /// Returns an empty vector if no nodes match.
+    ///
+    /// # Performance
+    ///
+    /// Time complexity: O(n) where n is the number of nodes in the subtree.
+    /// Space complexity: O(d + m) where d is the maximum depth and m is the
+    /// number of matching nodes.
+    pub fn find_all<F: Fn(&Node) -> bool>(&self, pred: F) -> Vec<Node<'a>> {
+        let mut cursor = self.cursor();
+        let mut stack = Vec::new();
+        let mut children = Vec::new();
+        let mut results = Vec::new();
+
+        stack.push(*self);
+
+        while let Some(node) = stack.pop() {
+            if pred(&node) {
+                results.push(node);
+            }
+            cursor.reset(&node);
+            if cursor.goto_first_child() {
+                loop {
+                    children.push(cursor.node());
+                    if !cursor.goto_next_sibling() {
+                        break;
+                    }
+                }
+                for child in children.drain(..).rev() {
+                    stack.push(child);
+                }
+            }
+        }
+
+        results
+    }
+
     // Traverse a tree passing from children to children in search of a specific
     // token or series of tokens
     pub(crate) fn traverse_children<F>(&self, token_list: &[F]) -> Option<Node<'a>>
