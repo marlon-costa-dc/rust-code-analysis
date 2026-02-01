@@ -443,26 +443,27 @@ impl Getter for CppCode {
                         Cpp::FunctionDeclarator == id
                             || Cpp::FunctionDeclarator2 == id
                             || Cpp::FunctionDeclarator3 == id
-                    }) && let Some(first) = fd.child(0)
-                    {
-                        match first.kind_id().into() {
-                            Cpp::TypeIdentifier
-                            | Cpp::Identifier
-                            | Cpp::FieldIdentifier
-                            | Cpp::DestructorName
-                            | Cpp::OperatorName
-                            | Cpp::QualifiedIdentifier
-                            | Cpp::QualifiedIdentifier2
-                            | Cpp::QualifiedIdentifier3
-                            | Cpp::QualifiedIdentifier4
-                            | Cpp::TemplateFunction
-                            | Cpp::TemplateMethod => {
-                                let code = &code[first.start_byte()..first.end_byte()];
-                                return std::str::from_utf8(code).ok();
-                            }
-                            _ => {}
+                    })
+                    && let Some(first) = fd.child(0)
+                {
+                    match first.kind_id().into() {
+                        Cpp::TypeIdentifier
+                        | Cpp::Identifier
+                        | Cpp::FieldIdentifier
+                        | Cpp::DestructorName
+                        | Cpp::OperatorName
+                        | Cpp::QualifiedIdentifier
+                        | Cpp::QualifiedIdentifier2
+                        | Cpp::QualifiedIdentifier3
+                        | Cpp::QualifiedIdentifier4
+                        | Cpp::TemplateFunction
+                        | Cpp::TemplateMethod => {
+                            let code = &code[first.start_byte()..first.end_byte()];
+                            return std::str::from_utf8(code).ok();
                         }
+                        _ => {}
                     }
+                }
             }
             _ => {
                 if let Some(name) = node.child_by_field_name("name") {
