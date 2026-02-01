@@ -453,3 +453,239 @@ impl<'a> Search<'a> for Node<'a> {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::langs::RustCode;
+
+    /// Helper to create a parsed tree from Rust source code.
+    fn parse_rust(code: &str) -> Tree {
+        Tree::new::<RustCode>(code.as_bytes())
+    }
+
+    // ============================================
+    // has_ancestor tests
+    // ============================================
+
+    #[test]
+    fn test_has_ancestor_finds_matching_ancestor() {
+        // Rust code: a function containing an if statement
+        let code = r#"
+fn example() {
+    if true {
+        let x = 1;
+    }
+}
+"#;
+        let tree = parse_rust(code);
+        let root = tree.get_root();
+
+        // Find the let_declaration inside the if
+        let let_decl = root
+            .find_all(|n| n.kind() == "let_declaration")
+            .into_iter()
+            .next()
+            .expect("should find let_declaration");
+
+        // Check that it has a function_item ancestor
+        assert!(
+            let_decl.has_ancestor(|n| n.kind() == "function_item"),
+            "let_declaration should have function_item as ancestor"
+        );
+
+        // Check that it has an if_expression ancestor
+        assert!(
+            let_decl.has_ancestor(|n| n.kind() == "if_expression"),
+            "let_declaration should have if_expression as ancestor"
+        );
+    }
+
+    #[test]
+    fn test_has_ancestor_returns_false_when_no_match() {
+        let code = r#"
+fn example() {
+    let x = 1;
+}
+"#;
+        let tree = parse_rust(code);
+        let root = tree.get_root();
+
+        // Find the let_declaration
+        let let_decl = root
+            .find_all(|n| n.kind() == "let_declaration")
+            .into_iter()
+            .next()
+            .expect("should find let_declaration");
+
+        // There's no while_expression ancestor
+        assert!(
+            !let_decl.has_ancestor(|n| n.kind() == "while_expression"),
+            "let_declaration should NOT have while_expression as ancestor"
+        );
+
+        // There's no struct_item ancestor
+        assert!(
+            !let_decl.has_ancestor(|n| n.kind() == "struct_item"),
+            "let_declaration should NOT have struct_item as ancestor"
+        );
+    }
+
+    #[test]
+    fn test_has_ancestor_on_root_returns_false() {
+        let code = "fn main() {}";
+        let tree = parse_rust(code);
+        let root = tree.get_root();
+
+        // Root node has no ancestors
+        assert!(
+            !root.has_ancestor(|_| true),
+            "root node should have no ancestors"
+        );
+    }
+
+    // ============================================
+    // find_all tests
+    // ============================================
+
+    #[test]
+    fn test_find_all_collects_multiple_matching_nodes() {
+        let code = r#"
+fn foo() {
+    let a = 1;
+    let b = 2;
+    let c = 3;
+}
+"#;
+        let tree = parse_rust(code);
+        let root = tree.get_root();
+
+        let let_decls = root.find_all(|n| n.kind() == "let_declaration");
+
+        assert_eq!(
+            let_decls.len(),
+            3,
+            "should find all 3 let_declarations"
+        );
+    }
+
+    #[test]
+    fn test_find_all_includes_self_when_matching() {
+        let code = "fn main() {}";
+        let tree = parse_rust(code);
+        let root = tree.get_root();
+
+        // Find source_file (which is the root itself)
+        let results = root.find_all(|n| n.kind() == "source_file");
+
+        assert_eq!(results.len(), 1, "should include self (root) when it matches");
+        assert_eq!(results[0].kind(), "source_file");
+    }
+
+    #[test]
+    fn test_find_all_returns_empty_when_nothing_matches() {
+        let code = r#"
+fn main() {
+    let x = 1;
+}
+"#;
+        let tree = parse_rust(code);
+        let root = tree.get_root();
+
+        // There are no struct definitions in this code
+        let results = root.find_all(|n| n.kind() == "struct_item");
+
+        assert!(
+            results.is_empty(),
+            "should return empty vec when nothing matches"
+        );
+    }
+
+    #[test]
+    fn test_find_all_nested_matches() {
+        // Code with nested functions (closures in Rust)
+        let code = r#"
+fn outer() {
+    let inner = || {
+        let nested = || {};
+    };
+}
+"#;
+        let tree = parse_rust(code);
+        let root = tree.get_root();
+
+        // Find all closure_expression nodes
+        let closures = root.find_all(|n| n.kind() == "closure_expression");
+
+        assert_eq!(
+            closures.len(),
+            2,
+            "should find both nested closures"
+        );
+    }
+
+    #[test]
+    fn test_find_all_with_complex_predicate() {
+        let code = r#"
+fn main() {
+    for i in 0..10 {
+        while true {
+            loop {
+                break;
+            }
+        }
+    }
+}
+"#;
+        let tree = parse_rust(code);
+        let root = tree.get_root();
+
+        // Find all loop constructs
+        let loops = root.find_all(|n| {
+            matches!(n.kind(), "for_expression" | "while_expression" | "loop_expression")
+        });
+
+        assert_eq!(
+            loops.len(),
+            3,
+            "should find for, while, and loop expressions"
+        );
+    }
+
+    // ============================================
+    // Combined usage test
+    // ============================================
+
+    #[test]
+    fn test_find_all_then_has_ancestor() {
+        let code = r#"
+fn outer() {
+    if true {
+        let x = 1;
+    }
+}
+
+fn other() {
+    let y = 2;
+}
+"#;
+        let tree = parse_rust(code);
+        let root = tree.get_root();
+
+        // Find all let_declarations
+        let let_decls = root.find_all(|n| n.kind() == "let_declaration");
+        assert_eq!(let_decls.len(), 2);
+
+        // Filter to only those inside an if_expression
+        let in_if: Vec<_> = let_decls
+            .iter()
+            .filter(|n| n.has_ancestor(|a| a.kind() == "if_expression"))
+            .collect();
+
+        assert_eq!(
+            in_if.len(),
+            1,
+            "only one let_declaration is inside an if_expression"
+        );
+    }
+}
