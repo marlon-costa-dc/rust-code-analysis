@@ -198,10 +198,46 @@ impl<'a> Node<'a> {
     /// Checks if this node has any ancestor that meets the given predicate.
     ///
     /// Traverses up the tree from this node's parent to the root,
-    /// returning true if any ancestor satisfies the predicate.
+    /// returning `true` if any ancestor satisfies the predicate.
+    ///
+    /// # Cycle Detection
+    ///
+    /// This method includes a safety guard against infinite loops that can occur
+    /// with tree-sitter 0.26+ when zero-width tokens return themselves as their
+    /// own parent. If a cycle is detected (parent has same id as current node),
+    /// traversal stops immediately.
+    ///
+    /// # Examples
+    ///
+    /// ```ignore
+    /// use rust_code_analysis::Node;
+    ///
+    /// // Check if node is inside a function
+    /// let is_in_function = node.has_ancestor(|n| n.kind() == "function_definition");
+    ///
+    /// // Check if node is inside a loop construct
+    /// let is_in_loop = node.has_ancestor(|n| {
+    ///     matches!(n.kind(), "for_statement" | "while_statement" | "loop_expression")
+    /// });
+    /// ```
+    ///
+    /// # Arguments
+    ///
+    /// * `pred` - A closure that takes a reference to a `Node` and returns `true`
+    ///   if the node matches the desired criteria.
+    ///
+    /// # Returns
+    ///
+    /// Returns `true` if any ancestor (parent, grandparent, etc.) satisfies the
+    /// predicate. Returns `false` if no ancestor matches or if the node is the root.
     pub fn has_ancestor<F: Fn(&Node) -> bool>(&self, pred: F) -> bool {
         let mut node = *self;
         while let Some(parent) = node.parent() {
+            // Cycle detection: tree-sitter 0.26 can return same node as parent
+            // for zero-width tokens, causing infinite loop
+            if parent.id() == node.id() {
+                break;
+            }
             if pred(&parent) {
                 return true;
             }
