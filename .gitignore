@@ -1,5 +1,46 @@
+# Build artifacts
 target
 enums/target
 *~
 Cargo.lock
+
+# IDE and Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# AI Agent Data (Claude, Gemini, Aider, Codex)
 .claude/
+.gemini/
+.aider*
+.codex/
+.cursor/
+.copilot/
+
+# Beads Issue Tracker (tracked via .beads/issues.jsonl only)
+# Daemon/runtime files are excluded via .beads/.gitignore
+
+# Planning and Documentation (local development only)
+.planning/
+
+# Session and Cache
+*.log
+*.cache
+*-cache/
+
+# Oracle/Reference Data
+.oracle/
+.reference/
+reference/
+
+# Temporary files
+tmp/
+.tmp/
+*.tmp
+
+# Environment
+.env
+.env.local
+.env.*.local

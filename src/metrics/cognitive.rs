@@ -196,6 +196,12 @@ fn get_nesting_from_map(
     nesting_map: &mut HashMap<usize, (usize, usize, usize)>,
 ) -> (usize, usize, usize) {
     if let Some(parent) = node.parent() {
+        // FIX: Detect cycle where parent equals node (tree-sitter 0.26 zero-width node bug)
+        // In tree-sitter 0.26, parent() can return the same node for zero-width tokens,
+        // causing infinite recursion. Break the cycle by returning default nesting.
+        if parent.id() == node.id() {
+            return (0, 0, 0);
+        }
         if let Some(n) = nesting_map.get(&parent.id()) {
             *n
         } else {
@@ -214,6 +220,12 @@ fn increment_function_depth<T: std::cmp::PartialEq + std::convert::From<u16>>(
     // Increase depth function nesting if needed
     let mut child = *node;
     while let Some(parent) = child.parent() {
+        // FIX: Detect cycle where parent equals child (tree-sitter 0.26 zero-width node bug)
+        // In tree-sitter 0.26, parent() can return the same node for zero-width tokens,
+        // causing infinite loops. Break the cycle to prevent stack overflow.
+        if parent.id() == child.id() {
+            break;
+        }
         if stop == parent.kind_id().into() {
             *depth += 1;
             break;

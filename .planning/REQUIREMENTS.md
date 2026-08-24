@@ -9,14 +9,14 @@ Requirements for getting all open PRs merged.
 
 ### Bug Fixes
 
-- [ ] **BUG-01**: Fix `get_nesting_from_map` infinite recursion in mozcpp tests
-- [ ] **BUG-02**: Ensure all tests pass on pr/tree-sitter-0.26 branch
+- [x] **BUG-01**: Fix `get_nesting_from_map` infinite recursion in mozcpp tests
+- [x] **BUG-02**: Ensure all tests pass on pr/tree-sitter-0.26 branch
 
 ### PR #1213 - Node API Extensions
 
-- [ ] **API-01**: `has_ancestor()` method detects if any ancestor matches predicate
-- [ ] **API-02**: `all_occurrences()` method collects all descendant nodes matching predicate
-- [ ] **API-03**: Both methods use non-recursive stack-based implementation
+- [x] **API-01**: `has_ancestor()` method detects if any ancestor matches predicate
+- [x] **API-02**: `find_all()` method collects all descendant nodes matching predicate
+- [x] **API-03**: Both methods use non-recursive stack-based implementation
 - [ ] **API-04**: PR #1213 merged into upstream
 
 ### PR #1214 - Tree-sitter Upgrade
@@ -35,9 +35,9 @@ Requirements for getting all open PRs merged.
 
 ### Code Quality
 
-- [ ] **QUALITY-01**: Commit rustfmt formatting changes
-- [ ] **QUALITY-02**: All clippy warnings resolved
-- [ ] **QUALITY-03**: All tests passing on master branch
+- [x] **QUALITY-01**: Commit rustfmt formatting changes
+- [x] **QUALITY-02**: All clippy warnings resolved
+- [x] **QUALITY-03**: All tests passing on master branch
 
 ## v2 Requirements
 
@@ -65,14 +65,14 @@ Deferred to future work after PRs are merged.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BUG-01 | Phase 1 | Pending |
-| BUG-02 | Phase 1 | Pending |
-| QUALITY-01 | Phase 2 | Pending |
-| QUALITY-02 | Phase 2 | Pending |
-| QUALITY-03 | Phase 2 | Pending |
-| API-01 | Phase 3 | Pending |
-| API-02 | Phase 3 | Pending |
-| API-03 | Phase 3 | Pending |
+| BUG-01 | Phase 1 | Complete |
+| BUG-02 | Phase 1 | Complete |
+| QUALITY-01 | Phase 2 | Complete |
+| QUALITY-02 | Phase 2 | Complete |
+| QUALITY-03 | Phase 2 | Complete |
+| API-01 | Phase 3 | Complete |
+| API-02 | Phase 3 | Complete |
+| API-03 | Phase 3 | Complete |
 | API-04 | Phase 3 | Pending |
 | DEPS-01 | Phase 4 | Pending |
 | DEPS-02 | Phase 4 | Pending |
@@ -90,4 +90,4 @@ Deferred to future work after PRs are merged.
 
 ---
 *Requirements defined: 2026-01-31*
-*Last updated: 2026-01-31 after initial definition*
+*Last updated: 2026-02-01 (Phase 3 Complete)*
