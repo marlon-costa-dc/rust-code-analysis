@@ -29,6 +29,7 @@ Cargo.lock
 *.log
 *.cache
 *-cache/
+.arbor/cache/
 
 # Oracle/Reference Data
 .oracle/
